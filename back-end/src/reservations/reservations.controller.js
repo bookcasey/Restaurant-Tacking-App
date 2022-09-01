@@ -57,7 +57,6 @@ function bodyDataHas(propertyName) {
 }
 
 function isTuesday(req, res, next) {
-  console.log("hello", req);
   const { data = {} } = req.body; // gets the body of data from the JSON
   const day = new Date(data.reservation_date);
   const dayOf = day.getUTCDay();
@@ -69,7 +68,7 @@ function isTuesday(req, res, next) {
 
 function isFutureRes(req, res, next) {
   const { data = {} } = req.body;
-  const day = new Date(data.reservation_date);
+  const day = new Date(`${data.reservation_date} ${data.reservation_time}`);
   const today = new Date(); // empty argument = current
   if (day < today) {
     return next({ status: 400, message: "Needs to be future date" });

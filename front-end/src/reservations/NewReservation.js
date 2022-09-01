@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { createRes } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert"
 export default function NewReservation({ date, setDate }) {
   const history = useHistory();
-  const [tuesday, setTuesday] = useState();
-  const [pastDate, setPastDate] = useState(false);
-  const [pastTuesday, setPastTuesday] = useState(false);
-  const [storeClosed, setStoreClosed] = useState();
+  const [error, setError] = useState(null);
   const [newReservation, setNewReservation] = useState({
     first_name: "",
     last_name: "",
@@ -25,36 +23,12 @@ export default function NewReservation({ date, setDate }) {
   const submitHandler = (event) => {
     event.preventDefault();
     newReservation.people = Number(newReservation.people); //to change string to number so that it fits the api criteria
-    // console.log(newReservation.people);
-    const day = new Date(newReservation.reservation_date)
-    const dayOf = day.getUTCDay()
-    const time = newReservation.reservation_time
-    const currentDate = new Date()
-    if(dayOf === 2 && day < currentDate){
-      setPastTuesday(true)
-      return
-    }
-    if(dayOf === 2 ){
-      setTuesday(true)
-      return 
-    }
-    if( day < currentDate ){
-      setPastDate(true)
-      return
-    }
-    if(currentDate < time) {
-      setStoreClosed(true)
-      console.log(`past time`)
-      return
-    }
-    if(time < `10:30` || time > `20:30`){
-      setStoreClosed(true)
-      console.log(`outside store hours`)
-      return
-    }
-    createRes(newReservation)
-    setDate(newReservation.reservation_date)
-    history.push("/reservations");
+
+    createRes(newReservation).then(() => {
+      setDate(newReservation.reservation_date)
+      history.push("/reservations");
+    } ).catch(error => setError(error))
+
   };
 
   return (
@@ -116,18 +90,7 @@ export default function NewReservation({ date, setDate }) {
         <button type="submit">submit</button>
       </form>
       <button onClick={() => history.push("/reservations")}>cancel</button>
-      {pastTuesday || tuesday ? (
-        <p className="alert alert-danger">
-          The restaurant is closed on Tuesdays. Please make a
-          reservation for another date.
-        </p>
-      ) : null}
-      {pastDate ? (
-        <p className="alert alert-danger">
-          The reservation must be for a future date. Please make a reservation for future date.
-        </p>
-      ) : null}
-      {storeClosed ? <p className="alert alert-danger">The restaurant is closed during this time. Open hours are 10:30 AM - 8:30 PM</p> : null}
+      <ErrorAlert error={error} ></ErrorAlert>
     </>
   );
 }
