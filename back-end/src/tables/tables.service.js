@@ -1,11 +1,17 @@
 const knex = require("../db/connection");
 
-const tableName = "tables";
-
 function list() {
-  return knex(tableName).select("*").orderBy("table_name");
+  return knex("tables").select("*")
+}
+
+function create(newTable) {
+  return knex("tables")
+  .insert(newTable)
+  .returning("*")
+  .then(tableData=>tableData[0])
 }
 
 module.exports = {
-    list,
-  };
+  list,
+  create
+}

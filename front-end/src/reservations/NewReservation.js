@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { createRes } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert"
+import ErrorAlert from "../layout/ErrorAlert";
 export default function NewReservation({ date, setDate }) {
   const history = useHistory();
   const [error, setError] = useState(null);
@@ -23,12 +23,12 @@ export default function NewReservation({ date, setDate }) {
   const submitHandler = (event) => {
     event.preventDefault();
     newReservation.people = Number(newReservation.people); //to change string to number so that it fits the api criteria
-
-    createRes(newReservation).then(() => {
-      setDate(newReservation.reservation_date)
-      history.push("/reservations");
-    } ).catch(error => setError(error))
-
+    createRes(newReservation)
+      .then(() => {
+        setDate(newReservation.reservation_date);
+        history.push("/reservations");
+      })
+      .catch((error) => setError(error));
   };
 
   return (
@@ -90,7 +90,7 @@ export default function NewReservation({ date, setDate }) {
         <button type="submit">submit</button>
       </form>
       <button onClick={() => history.push("/reservations")}>cancel</button>
-      <ErrorAlert error={error} ></ErrorAlert>
+      <ErrorAlert error={error}></ErrorAlert>
     </>
   );
 }
