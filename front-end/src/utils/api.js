@@ -78,3 +78,14 @@ export async function createRes(res, signal) {
   };
   return await fetchJson(url, options);
 }
+
+export async function createTable(res, signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ data: res }),
+    signal,
+  };
+  return await fetchJson(url, options);
+}

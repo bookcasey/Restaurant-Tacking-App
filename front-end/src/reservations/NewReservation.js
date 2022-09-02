@@ -88,9 +88,9 @@ export default function NewReservation({ date, setDate }) {
           />
         </div>
         <button type="submit">submit</button>
-      </form>
       <button onClick={() => history.push("/reservations")}>cancel</button>
-      <ErrorAlert error={error}></ErrorAlert>
+      </form>
+      <ErrorAlert error={error} />
     </>
   );
 }
