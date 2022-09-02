@@ -6,6 +6,9 @@ function ListReservations({ reservation }) {
       <div>
         <h2>{`${reservation.first_name} ${reservation.last_name}'s Reservation`}</h2>
       </div>
+      <div className="">
+        <button>Seat</button>
+      </div>
       <div>
         <h6>Check-in Time</h6>
         <p>{reservation.reservation_time}</p>
