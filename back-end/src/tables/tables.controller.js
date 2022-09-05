@@ -75,7 +75,7 @@ function isInteger(req,res,next) {
 function capacity(req,res,next) {
   const reservation = res.locals.reservation.people
   const table = res.locals.table.capacity
-  if( reservation > table ){
+  if( reservation  > table  ){
     return next({ status : 400, message: `table does not have sufficient capacity`})
   }
   return next()

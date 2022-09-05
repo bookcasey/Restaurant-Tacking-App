@@ -11,14 +11,20 @@ import ListTables from "../tables/Tables";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ date, setDate }) {
-  const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+function Dashboard({
+  date,
+  setDate,
+  reservations,
+  setReservations,
+  reservationsError,
+  setReservationsError,
+  tables,
+  setTables,
+  tablesError,
+  setTablesError,
+}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [tables, setTables] = useState([]);
-  const [tablesError, setTablesError] = useState([]);
-  
-
+  console.log("params" ,reservations)
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
@@ -27,9 +33,7 @@ function Dashboard({ date, setDate }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-      listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesError);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
@@ -49,52 +53,53 @@ function Dashboard({ date, setDate }) {
         );
       }
     } else {
-      return reservations.map((reservation) => (
+      return reservations.map((reservation, index) => (
+        <div key={index}>
         <ListReservations
-          key={reservation.reservation_id}
           reservation={reservation}
         />
+        </div>
       ));
     }
   }
 
   return (
-    <main style={{display : "flex"}}>
+    <main style={{ display: "flex" }}>
       <div className="">
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+        <h1>Dashboard</h1>
+        <div className="d-md-flex mb-3">
+          <h4 className="mb-0">Reservations for {date}</h4>
+        </div>
+        <ErrorAlert error={reservationsError} />
+        {areReservations()}
+        <button
+          className="btn btn-primary mr-2 pt-2 pb-2"
+          onClick={() => {
+            setDate(today());
+          }}
+        >
+          Today
+        </button>
+        <button
+          className="btn btn-secondary mr-2 pt-2 pb-2"
+          onClick={() => {
+            setDate(previous(date));
+          }}
+        >
+          Previous Date
+        </button>
+        <button
+          className="btn btn-secondary mr-2 pt-2 pb-2"
+          onClick={() => {
+            setDate(next(date));
+          }}
+        >
+          Next Date
+        </button>
       </div>
-      <ErrorAlert error={reservationsError} />
-      {areReservations()}
-      <button
-        className="btn btn-primary mr-2 pt-2 pb-2"
-        onClick={() => {
-          setDate(today());
-        }}
-      >
-        Today
-      </button>
-      <button
-        className="btn btn-secondary mr-2 pt-2 pb-2"
-        onClick={() => {
-          setDate(previous(date));
-        }}
-      >
-        Previous Date
-      </button>
-      <button
-        className="btn btn-secondary mr-2 pt-2 pb-2"
-        onClick={() => {
-          setDate(next(date));
-        }}
-      >
-        Next Date
-      </button>
-</div>
-<div>
-  <ListTables tables={tables} tablesError={tablesError} />
-</div>
+      <div>
+        <ListTables tables={tables} tablesError={tablesError} />
+      </div>
     </main>
   );
 }

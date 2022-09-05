@@ -1,13 +1,15 @@
 import { useHistory } from "react-router-dom";
 
-function ListReservations({ reservation }) {
+function ListReservations({ reservation, index }) {
   return (
-    <div className="div">
+    <div key={index} className="div" >
       <div>
         <h2>{`${reservation.first_name} ${reservation.last_name}'s Reservation`}</h2>
       </div>
       <div className="">
+        <a href={`/reservations/${reservation.reservation_id}/seat`}>
         <button>Seat</button>
+        </a>
       </div>
       <div>
         <h6>Check-in Time</h6>

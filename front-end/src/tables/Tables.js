@@ -1,16 +1,16 @@
 function Tables({ tables, tablesError }) {
   function mapTables(tables) {
-    return tables.map((table) => (
-      <div>
-        <h2 className=""> Name: {table.table_name}</h2>
+    return tables.map((table, index) => (
+      <div key={index}>
+        <h2 className="" > Name: {table.table_name}</h2>
         <p>Capacity: {table.capacity}</p>
-        <p className="">
-          {table.reservation_id ? (
+        <div className="" >
+          {!table.reservation_id ? (
             <p className="alert alert-success">Available</p>
           ) : (
             <p className="alert alert-danger">Occupied</p>
           )}
-        </p>
+        </div>
       </div>
     ));
   }
