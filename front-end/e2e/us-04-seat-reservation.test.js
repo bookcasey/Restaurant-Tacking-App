@@ -145,7 +145,7 @@ describe("US-04 - Seat reservation - E2E", () => {
     });
   });
 
-  describe("/reservations/:reservation_id/seat page", () => {
+  describe.only("/reservations/:reservation_id/seat page", () => {
     let reservation;
 
     beforeEach(async () => {

@@ -18,7 +18,7 @@ function SeatReservation({
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date }, abortController.signal)
+    listReservations(abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     listTables(abortController.signal).then(setTables).catch(setTablesError);
@@ -27,10 +27,12 @@ function SeatReservation({
 
   const params = useParams();
 
+  console.log(params)
+
   let currentReservation =
     reservations.length > 0
       ? reservations.find(
-          (reservation) => (reservation.reservation_id = params.reservation_id)
+          (reservation) => reservation.reservation_id === Number(params.reservation_id)
         )
       : "loading";
 
@@ -60,7 +62,7 @@ function SeatReservation({
     });
   };
 
-  console.log(currentTable);
+
 
   const history = useHistory();
 
@@ -77,18 +79,21 @@ function SeatReservation({
     }
   };
 
+console.log(reservations)
+
   return (
     <>
       <h2>
         Seating {currentReservation.first_name} {currentReservation.last_name}
       </h2>
       <form onSubmit={submitHandler} name="firstName">
-        <h3>Available seats</h3>
+        <h3>Available tables</h3>
         <select onChange={handleChange}>
           <option value="null">None</option>
           {tables.length > 0 ? mapAvailableTables() : "Loading..."}
         </select>
         <button type="submit">Seat</button>
+        <button onClick={() => history.go(-1)}>cancel</button>
       </form>
       <ErrorAlert error={error} />
       {isNull ? (

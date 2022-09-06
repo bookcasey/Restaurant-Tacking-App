@@ -31,6 +31,7 @@ export default function NewReservation({ date, setDate }) {
       .catch((error) => setError(error));
   };
 
+
   return (
     <>
       <form onSubmit={submitHandler}>
@@ -88,7 +89,7 @@ export default function NewReservation({ date, setDate }) {
           />
         </div>
         <button type="submit">submit</button>
-      <button onClick={() => history.push("/reservations")}>cancel</button>
+      <button onClick={() => history.go(-1)}>cancel</button>
       </form>
       <ErrorAlert error={error} />
     </>

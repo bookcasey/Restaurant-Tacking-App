@@ -51,7 +51,7 @@ function CreateTable() {
           />
         </div>
         <button type="submit">submit</button>
-      <button onClick={() => history.push("/reservations")}>cancel</button>
+      <button onClick={() => history.go(-1)}>cancel</button>
       </form>
       <ErrorAlert error={error} />
     </>

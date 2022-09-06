@@ -1,8 +1,8 @@
 import { useHistory } from "react-router-dom";
 
-function ListReservations({ reservation, index }) {
+function ListReservations({ reservation }) {
   return (
-    <div key={index} className="div" >
+    <div className="div" >
       <div>
         <h2>{`${reservation.first_name} ${reservation.last_name}'s Reservation`}</h2>
       </div>
