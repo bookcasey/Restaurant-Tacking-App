@@ -73,6 +73,11 @@ export async function listTables(signal) {
   return await fetchJson(url, { headers, signal }, []);
  }
 
+ export async function readReservation(resId ,signal) {
+  const url = `${API_BASE_URL}/reservations/${resId}`;
+  return await fetchJson(url, { headers, signal }, []);
+ }
+
 
 // return async (movie) => {
 //   const url = `${API_BASE_URL}/movies/${movie.movie_id}/reviews`;

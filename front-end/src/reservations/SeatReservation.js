@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
-import { listReservations, listTables, updateTable } from "../utils/api";
+import { listReservations, listTables, readReservation, updateTable } from "../utils/api";
 
 function SeatReservation({
-  reservations,
-  setReservations,
+
   reservationsError,
   setReservationsError,
   tables,
@@ -14,39 +13,38 @@ function SeatReservation({
   setTablesError,
   date,
 }) {
-  useEffect(loadDashboard, [date]);
+
+  const params = useParams();
+
+  useEffect(loadDashboard, [params.reservation_id]);
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations(abortController.signal)
-      .then(setReservations)
+    readReservation(params.reservation_id ,abortController.signal)
+      .then(setReservation)
       .catch(setReservationsError);
     listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
-  const params = useParams();
 
-  console.log(params)
 
-  let currentReservation =
-    reservations.length > 0
-      ? reservations.find(
-          (reservation) => reservation.reservation_id === Number(params.reservation_id)
-        )
-      : "loading";
+
+
+
 
   const [currentTable, setCurrentTable] = useState({table_id : "null"});
+  const [reservation, setReservation] = useState({});
   const [error, setError] = useState(null);
   const [isNull, setIsNull] = useState();
 
   function mapAvailableTables() {
-    const availableTables = tables.filter((table) => !table.reservation_id);
+  
 
-    return availableTables.map((table, index) => {
+    return tables.map((table, index) => {
       return (
         <option key={index} value={table.table_id}>
-          {table.table_name}
+          {table.table_name} - {table.capacity}
         </option>
       );
     });
@@ -79,16 +77,16 @@ function SeatReservation({
     }
   };
 
-console.log(reservations)
+
 
   return (
     <>
       <h2>
-        Seating {currentReservation.first_name} {currentReservation.last_name}
+        Seating {reservation.first_name} {reservation.last_name}
       </h2>
       <form onSubmit={submitHandler} name="firstName">
         <h3>Available tables</h3>
-        <select onChange={handleChange}>
+        <select name="table_id" onChange={handleChange}>
           <option value="null">None</option>
           {tables.length > 0 ? mapAvailableTables() : "Loading..."}
         </select>

@@ -4,7 +4,7 @@ import { createTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 
-function CreateTable() {
+function CreateTable({tables, setTables}) {
     const [error, setError] = useState(null);
     const [newTable, setTable] = useState({
         table_name: "",
@@ -22,7 +22,9 @@ function CreateTable() {
       const submitHandler = (event) => {
         event.preventDefault();
         newTable.capacity = Number(newTable.capacity); //to change string to number so that it fits the api criteria
-        createTable(newTable)
+        createTable(newTable).then((updatedTable) =>{
+          setTables([...tables, updatedTable])
+        })
           .then(() => {
             history.push("/");
           })

@@ -4,6 +4,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
 import { previous, next, today } from "../utils/date-time";
 import ListTables from "../tables/Tables";
+import useQuery from "../utils/useQuery";
 
 /**
  * Defines the dashboard page.
@@ -12,7 +13,7 @@ import ListTables from "../tables/Tables";
  * @returns {JSX.Element}
  */
 function Dashboard({
-  date,
+ today,
   setDate,
   reservations,
   setReservations,
@@ -23,17 +24,30 @@ function Dashboard({
   tablesError,
   setTablesError,
 }) {
+
+  const query = useQuery();
+  const date = query.get("date") || today
+
   const [isLoading, setIsLoading] = useState(true);
-  console.log("params" ,reservations)
+
   useEffect(loadDashboard, [date]);
+
+  console.log("liine 28", date);
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
+      .then((data) => {
+        console.log("line 34", data);
+        setReservations(data);
+      })
+      .then(() => setIsLoading(false))
+      // .catch(setReservationsError);
+      .catch((error) => console.log(error));
+
     listTables(abortController.signal).then(setTables).catch(setTablesError);
+
     return () => abortController.abort();
   }
 
@@ -43,21 +57,19 @@ function Dashboard({
 
   function areReservations() {
     if (reservations.length === 0) {
-      if (isLoading) {
-        return <h2>Loading...</h2>;
+        if (isLoading) {
+          return <h2>Loading...</h2>;
+        } else {
+          return (
+            <h4 className="alert alert-primary">
+              There are no reservations for this date yet...
+            </h4>
+          );
+        }
       } else {
-        return (
-          <h4 className="alert alert-primary">
-            There are no reservations for this date yet...
-          </h4>
-        );
-      }
-    } else {
       return reservations.map((reservation, index) => (
         <div key={index}>
-        <ListReservations
-          reservation={reservation}
-        />
+          <ListReservations reservation={reservation} />
         </div>
       ));
     }

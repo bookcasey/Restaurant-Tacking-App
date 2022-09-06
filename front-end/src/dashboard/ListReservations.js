@@ -8,7 +8,7 @@ function ListReservations({ reservation }) {
       </div>
       <div className="">
         <a href={`/reservations/${reservation.reservation_id}/seat`}>
-        <button>Seat</button>
+        <button className="btn btn-dark mb-3">Seat</button>
         </a>
       </div>
       <div>

@@ -6,9 +6,9 @@ function Tables({ tables, tablesError }) {
         <p>Capacity: {table.capacity}</p>
         <div className="" >
           {!table.reservation_id ? (
-            <p className="alert alert-success">Available</p>
+            <p className="alert alert-success">available</p>
           ) : (
-            <p className="alert alert-danger">Occupied</p>
+            <p className="alert alert-danger">occupied</p>
           )}
         </div>
       </div>
