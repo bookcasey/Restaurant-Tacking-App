@@ -20,6 +20,14 @@ function read(reservationId) {
     .first();
 }
 
+function update(reservation) {
+  return knex("reservations")
+  .where({ reservation_id: reservation.reservation_id })
+  .update(reservation)
+  .returning("*")
+  .then((reservationData) => reservationData[0])
+}
+
 function create(newReservation) {
   return knex("reservations")
     .insert(newReservation)
@@ -32,4 +40,5 @@ module.exports = {
   listDate,
   create,
   read,
+  update,
 };

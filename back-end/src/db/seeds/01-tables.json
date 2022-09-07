@@ -2,12 +2,12 @@
     {
       "table_name": "Bar #1",
       "capacity": 1,
-      "reservation_id":1
+      "reservation_id":null
     },
     {
       "table_name": "Bar #2",
       "capacity": 1,
-      "reservation_id":2
+      "reservation_id":null
     },
     {
       "table_name": "#1",

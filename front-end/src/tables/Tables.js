@@ -1,16 +1,52 @@
+import { useHistory } from "react-router";
+import { updateResId } from "../utils/api";
+
 function Tables({ tables, tablesError }) {
+  const history = useHistory();
+
+  function clickHandler(event) {
+    let tableId = event.target.value;
+    tableId = Number(tableId);
+    console.log(event.target.value);
+    if (window.confirm("Is this table ready to seat new guests?") === true) {
+      updateResId(tableId)
+        .then(() => history.go(0))
+        .catch((error) => console.log("error", error));
+    }
+  }
+
   function mapTables(tables) {
     return tables.map((table, index) => (
       <div key={index}>
-        <h2 className="" > Name: {table.table_name}</h2>
+        <h2 className=""> Name: {table.table_name}</h2>
         <p>Capacity: {table.capacity}</p>
-        <div className="" >
+        <div className="">
           {!table.reservation_id ? (
-            <p className="alert alert-success">available</p>
+            <p
+              data-table-id-status={table.table_id}
+              className="alert alert-success"
+            >
+              free
+            </p>
           ) : (
-            <p className="alert alert-danger">occupied</p>
+            <p
+              data-table-id-status={table.table_id}
+              className="alert alert-danger"
+            >
+              occupied
+            </p>
           )}
         </div>
+        {table.reservation_id ? (
+          <button
+            className="btn btn-dark mb-3"
+            value={table.table_id}
+            data-table-id-finish={table.table_id}
+            onClick={clickHandler}
+          >
+            Finish
+          </button>
+        ) : null}
       </div>
     ));
   }

@@ -1,4 +1,9 @@
 .side-bar {
   background-color: #393a44;
   min-width: 200px;
+  height : 100vh; /* vh = view Height. It makes the height of the element as large as the page itself.*/
+}
+
+html,body {
+  height : 100%;
 }

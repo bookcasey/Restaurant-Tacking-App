@@ -25,6 +25,8 @@ function update(table) {
   .returning("*")
 }
 
+
+
 module.exports = {
   list,
   create,
