@@ -7,7 +7,6 @@ function Tables({ tables, tablesError }) {
   function clickHandler(event) {
     let tableId = event.target.value;
     tableId = Number(tableId);
-    console.log(event.target.value);
     if (window.confirm("Is this table ready to seat new guests?") === true) {
       updateResId(tableId)
         .then(() => history.go(0))

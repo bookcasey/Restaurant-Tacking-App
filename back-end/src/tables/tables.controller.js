@@ -42,7 +42,13 @@ async function update(req, res) {
     ...tableData,
     table_id: tableId,
   };
-  const data = await service.update(updatedTable);
+  const data = await service.seatTable(updatedTable);
+  res.json({ data });
+}
+
+async function destroy(req, res) {
+  const resId = res.locals.table.reservation_id;
+  const data = await service.unSeatTable(resId);
   res.json({ data });
 }
 
@@ -66,6 +72,17 @@ function isOneChar(req, res, next) {
     status: 400,
     message: "table_name must be at least 2 characters",
   });
+}
+
+function notSeated(req, res, next) {
+  const reservation = res.locals.reservation;
+  if (reservation.status === "seated") {
+    return next({
+      status: 400,
+      message: "Table is already seated",
+    });
+  }
+  return next();
 }
 
 function isInteger(req, res, next) {
@@ -104,16 +121,6 @@ function notOccupied(req, res, next) {
   return next();
 }
 
-async function destroy(req, res) {
-  const tableId = req.params.table_id;
-  const updatedTable = {
-    reservation_id: null,
-    table_id: tableId,
-  };
-  const data = await service.update(updatedTable);
-  res.json({ data });
-}
-
 module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [
@@ -123,13 +130,13 @@ module.exports = {
     asyncErrorBoundary(isInteger),
     asyncErrorBoundary(create),
   ],
-  // read: [readRes,read],
   update: [
     asyncErrorBoundary(bodyDataHas("reservation_id")),
     asyncErrorBoundary(resExists),
     asyncErrorBoundary(tableExists),
     asyncErrorBoundary(capacity),
     asyncErrorBoundary(occupied),
+    notSeated,
     asyncErrorBoundary(update),
   ],
   delete: [

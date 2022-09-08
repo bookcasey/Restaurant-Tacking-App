@@ -32,14 +32,12 @@ function Dashboard({
 
   useEffect(loadDashboard, [date]);
 
-  console.log("liine 28", date);
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
     listReservations({ date }, abortController.signal)
       .then((data) => {
-        console.log("line 34", data);
         setReservations(data);
       })
       .then(() => setIsLoading(false))
