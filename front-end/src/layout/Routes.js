@@ -6,6 +6,7 @@ import { today } from "../utils/date-time";
 import NewReservation from "../reservations/NewReservation";
 import CreateTable from "../tables/CreateTable";
 import SeatReservation from "../reservations/SeatReservation";
+import SearchFeature from "../Search/SearchFeature";
 
 /**
  * Defines all the routes for the application.
@@ -65,6 +66,9 @@ function Routes() {
                   setTablesError={setTablesError}
                   date={date}
                    />
+      </Route>
+      <Route path="/search">
+        <SearchFeature />
       </Route>
       <Route>
         <NotFound />

@@ -14,6 +14,14 @@ function listDate(date) {
     .orderBy("reservations.reservation_time");
 }
 
+function listMobile(mobile){
+  return knex("reservations")
+  .select("*")
+  .where('reservations.mobile_number','like', `%${mobile}%`)
+  // .whereNot({"reservations.status": "finished"})
+  .orderBy("reservations.reservation_time")
+  }
+
 function read(reservationId) {
   return knex("reservations")
     .select("*")
@@ -43,4 +51,5 @@ module.exports = {
   create,
   read,
   update,
+  listMobile,
 };

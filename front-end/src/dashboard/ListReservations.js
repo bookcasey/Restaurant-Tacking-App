@@ -1,6 +1,7 @@
 
 
 function ListReservations({ reservation }) {
+  
   function seatButton() {
     if (reservation.status === "booked") {
       return (
