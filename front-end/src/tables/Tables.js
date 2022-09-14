@@ -1,15 +1,13 @@
-import { useHistory } from "react-router";
 import { updateResId } from "../utils/api";
 
-function Tables({ tables, tablesError }) {
-  const history = useHistory();
+function Tables({ tables, loadDashboard }) {
 
   function clickHandler(event) {
     let tableId = event.target.value;
     tableId = Number(tableId);
     if (window.confirm("Is this table ready to seat new guests?") === true) {
       updateResId(tableId)
-        .then(() => history.go(0))
+        .then(() => loadDashboard())
         .catch((error) => console.log("error", error));
     }
   }

@@ -78,13 +78,6 @@ export async function listTables(signal) {
   return await fetchJson(url, { headers, signal }, []);
  }
 
-
-// return async (movie) => {
-//   const url = `${API_BASE_URL}/movies/${movie.movie_id}/reviews`;
-//   movie.reviews = await fetchJson(url, { headers, signal }, []);
-//   return movie;
-// };
-
 export async function createRes(res, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
@@ -116,6 +109,22 @@ export async function updateTable(table, signal) {
     signal,
   };
   return await fetchJson(url, options);
+}
+
+export async function updateRes(resData, reservation_Id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_Id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: resData }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+export async function loadCurrentRes( resId, signal ) {
+  const url = new URL(`${API_BASE_URL}/reservations/${resId}`);
+  return await fetchJson(url, { headers, signal }, [])
 }
 
 export async function updateResId(tableId, reservation_id, signal) {

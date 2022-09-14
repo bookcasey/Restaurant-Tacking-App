@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import {
-  listReservations,
   listTables,
   readReservation,
   updateTable,
@@ -19,6 +18,7 @@ function SeatReservation({
 }) {
   const params = useParams();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(loadDashboard, [params.reservation_id]);
   function loadDashboard() {
     const abortController = new AbortController();
@@ -82,7 +82,7 @@ function SeatReservation({
           {tables.length > 0 ? mapAvailableTables() : "Loading..."}
         </select>
         <button className="btn btn-primary ml-1 mr-1" type="submit">Seat</button>
-        <button className="btn btn-secondary" onClick={() => history.go(-1)}>cancel</button>
+        <button className="btn btn-secondary" onClick={() => history.push("/dashboard")}>cancel</button>
       </form>
       <ErrorAlert error={error} />
       {isNull ? (

@@ -11,16 +11,18 @@ function listDate(date) {
     .select("*")
     .where({ "reservations.reservation_date": date })
     .whereNot({"reservations.status" : "finished"})
+    .whereNot({"reservations.status" : "cancelled"})
     .orderBy("reservations.reservation_time");
 }
 
-function listMobile(mobile){
+function listMobile(mobile) {
   return knex("reservations")
-  .select("*")
-  .where('reservations.mobile_number','like', `%${mobile}%`)
-  // .whereNot({"reservations.status": "finished"})
-  .orderBy("reservations.reservation_time")
-  }
+    .whereRaw(
+      "translate(mobile_number, '() -', '') like ?",
+      `%${mobile.replace(/\D/g, "")}%`
+    )
+    .orderBy("reservation_date");
+}
 
 function read(reservationId) {
   return knex("reservations")

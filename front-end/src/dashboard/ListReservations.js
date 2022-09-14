@@ -1,16 +1,27 @@
+import { updateRes } from "../utils/api";
 
-
-function ListReservations({ reservation }) {
-  
+function ListReservations({ reservation, loadDashboard }) {
   function seatButton() {
     if (reservation.status === "booked") {
       return (
         <a href={`/reservations/${reservation.reservation_id}/seat`}>
-          <button className="btn btn-dark mb-3">Seat</button>
+          <button className="btn btn-dark mb-3 mr-2">Seat</button>
         </a>
       );
-    } else {
-      return null;
+    } else return null;
+  }
+
+  function cancelHandler(event) {
+    event.preventDefault();
+    const cancelledRes = { ...reservation, status: "cancelled" };
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      ) === true
+    ) {
+      updateRes(cancelledRes, reservation.reservation_id)
+        .then(() => loadDashboard())
+        .catch((error) => console.log("error", error));
     }
   }
 
@@ -19,7 +30,19 @@ function ListReservations({ reservation }) {
       <div>
         <h2>{`${reservation.first_name} ${reservation.last_name}'s Reservation`}</h2>
       </div>
-      <div className="">{seatButton()}</div>
+      <div style={{ display: "flex" }}>
+        <div className="">{seatButton()}</div>
+        <a href={`/reservations/${reservation.reservation_id}/edit`}>
+          <button className="btn btn-dark mb-3 mr-2">Edit</button>
+        </a>
+        <button
+          onClick={cancelHandler}
+          data-reservation-id-cancel={reservation.reservation_id}
+          className="btn btn-dark mb-3"
+        >
+          Cancel
+        </button>
+      </div>
       <div>
         <h6>Check-in Time</h6>
         <p>{reservation.reservation_time}</p>
@@ -38,7 +61,9 @@ function ListReservations({ reservation }) {
       </div>
       <div>
         <h6>Status</h6>
-        <p data-reservation-id-status={reservation.reservation_id}>{reservation.status}</p>
+        <p data-reservation-id-status={reservation.reservation_id}>
+          {reservation.status}
+        </p>
       </div>
     </div>
   );

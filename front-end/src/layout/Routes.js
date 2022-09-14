@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
@@ -7,6 +7,7 @@ import NewReservation from "../reservations/NewReservation";
 import CreateTable from "../tables/CreateTable";
 import SeatReservation from "../reservations/SeatReservation";
 import SearchFeature from "../Search/SearchFeature";
+import EditReservations from "../reservations/EditReservations";
 
 /**
  * Defines all the routes for the application.
@@ -42,33 +43,32 @@ function Routes() {
           setTables={setTables}
           tablesError={tablesError}
           setTablesError={setTablesError}
-        />{" "}
-        {/*date={today()} */}
+        />
       </Route>
       <Route path="/reservations/new">
         <NewReservation setDate={setDate} />
       </Route>
       <Route path="/tables/new">
-        <CreateTable
-                  tables={tables}
-                  setTables={setTables}
-                   />
+        <CreateTable tables={tables} setTables={setTables} />
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <SeatReservation
-                  reservations={reservations}
-                  setReservations={setReservations}
-                  reservationsError={reservationsError}
-                  setReservationsError={setReservationsError}
-                  tables={tables}
-                  setTables={setTables}
-                  tablesError={tablesError}
-                  setTablesError={setTablesError}
-                  date={date}
-                   />
+          reservations={reservations}
+          setReservations={setReservations}
+          reservationsError={reservationsError}
+          setReservationsError={setReservationsError}
+          tables={tables}
+          setTables={setTables}
+          tablesError={tablesError}
+          setTablesError={setTablesError}
+          date={date}
+        />
       </Route>
       <Route path="/search">
         <SearchFeature />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservations setDate={setDate} />
       </Route>
       <Route>
         <NotFound />

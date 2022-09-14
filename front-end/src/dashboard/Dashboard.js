@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
-import { previous, next, today } from "../utils/date-time";
+import { previous, next } from "../utils/date-time";
 import ListTables from "../tables/Tables";
 import useQuery from "../utils/useQuery";
 
@@ -13,7 +13,7 @@ import useQuery from "../utils/useQuery";
  * @returns {JSX.Element}
  */
 function Dashboard({
- today,
+  today,
   setDate,
   reservations,
   setReservations,
@@ -24,14 +24,13 @@ function Dashboard({
   tablesError,
   setTablesError,
 }) {
-
   const query = useQuery();
-  const date = query.get("date") || today
+  const date = query.get("date") || today;
 
   const [isLoading, setIsLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(loadDashboard, [date]);
-
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -41,7 +40,6 @@ function Dashboard({
         setReservations(data);
       })
       .then(() => setIsLoading(false))
-      // .catch(setReservationsError);
       .catch((error) => console.log(error));
 
     listTables(abortController.signal).then(setTables).catch(setTablesError);
@@ -55,19 +53,22 @@ function Dashboard({
 
   function areReservations() {
     if (reservations.length === 0) {
-        if (isLoading) {
-          return <h2>Loading...</h2>;
-        } else {
-          return (
-            <h4 className="alert alert-primary">
-              There are no reservations for this date yet...
-            </h4>
-          );
-        }
+      if (isLoading) {
+        return <h2>Loading...</h2>;
       } else {
+        return (
+          <h4 className="alert alert-primary">
+            There are no reservations for this date yet...
+          </h4>
+        );
+      }
+    } else {
       return reservations.map((reservation, index) => (
         <div key={index}>
-          <ListReservations reservation={reservation} />
+          <ListReservations
+            loadDashboard={loadDashboard}
+            reservation={reservation}
+          />
         </div>
       ));
     }
@@ -108,7 +109,10 @@ function Dashboard({
         </button>
       </div>
       <div>
-        <ListTables tables={tables} tablesError={tablesError} />
+        <ListTables
+          loadDashboard={loadDashboard}
+          tables={tables}
+        />
       </div>
     </main>
   );

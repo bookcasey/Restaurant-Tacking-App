@@ -9,18 +9,18 @@ async function list(req, res) {
   const mobile = req.query.mobile_number 
   if(date){
     const data = await service.listDate(date)
-    res.json({
+    return res.json({
       data
      });
    }
    if(mobile){
      const data = await service.listMobile(mobile)
-     res.json({
+     return res.json({
        data
      })
    } else {
      const data = await service.list()
-     res.json({data})
+     return res.json({data})
    }
 }
 
@@ -31,6 +31,7 @@ async function read(req, res) {
 async function reservationExists(req, res, next) {
   const reservation = await service.read(req.params.reservation_id);
   if (reservation) {
+    console.log(reservation)
     res.locals.reservation = reservation;
     return next();
   }
@@ -174,7 +175,7 @@ function resStatus(req, res, next) {
 }
 
 function validStatus(req, res, next) {
-  let validStatuses = [`booked`, `seated`, `finished`];
+  let validStatuses = [`booked`, `seated`, `finished`, `cancelled`];
   const { data = {} } = req.body;
   const status = data.status;
   if (!validStatuses.includes(status)) {
@@ -193,23 +194,32 @@ module.exports = {
     bodyDataHas("last_name"),
     bodyDataHas("mobile_number"),
     bodyDataHas("reservation_date"),
+    //  bodyDataHas("status"),
     isTuesday,
-    isFutureRes,
     isPeopleNumber,
     bodyDataHas("reservation_time"),
     bodyDataHas("people"),
     isNumber("reservation_date"),
     isTime("reservation_time"),
+    isFutureRes,
     openHours,
-    isBooked,
     resStatus,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
+
   update: [
-    asyncErrorBoundary(reservationExists),
-    isFinished,
-    validStatus,
+    reservationExists,
+    bodyDataHas("first_name"),
+    bodyDataHas("last_name"),
+    bodyDataHas("mobile_number"),
+    bodyDataHas("reservation_date"),
+    bodyDataHas("reservation_time"),
+    bodyDataHas("people"),
+    isPeopleNumber,
+    isNumber("reservation_date"),
+    isTime("reservation_time"),
     update,
   ],
+  updateStatus: [reservationExists, isFinished, validStatus, update], //put
 };
