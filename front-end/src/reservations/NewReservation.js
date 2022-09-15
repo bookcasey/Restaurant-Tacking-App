@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { createRes } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -34,17 +34,17 @@ export default function NewReservation({ setDate }) {
 
   return (
     <>
-        <div className="mt-5 border rounded text-center text-white p-1 bg-info">
-    <h2>Creating reservation </h2>
-  </div>
-    <ReservationsForm
-      submitHandler={submitHandler}
-      reservation={reservation}
-      setReservation={setReservation}
-      handleChange={handleChange}
-      error={error}
-      ErrorAlert={ErrorAlert}
-    />
+      <div className="mt-5 border rounded text-center text-white p-1 bg-info">
+        <h2>Creating reservation </h2>
+      </div>
+      <ReservationsForm
+        submitHandler={submitHandler}
+        reservation={reservation}
+        setReservation={setReservation}
+        handleChange={handleChange}
+        error={error}
+        ErrorAlert={ErrorAlert}
+      />
     </>
   );
 }

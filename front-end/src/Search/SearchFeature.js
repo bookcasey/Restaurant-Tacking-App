@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { listReservations } from "../utils/api";
 import ListReservations from "../dashboard/ListReservations";
 
@@ -41,7 +41,7 @@ export default function SearchFeature() {
     <>
       <form className="mt-5" onSubmit={submitHandler}>
         <input
-        className="form-control"
+          className="form-control"
           onChange={handleChange}
           type="search"
           name="mobile_number"

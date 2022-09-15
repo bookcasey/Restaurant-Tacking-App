@@ -1,3 +1,4 @@
+import React from 'react';
 import { updateRes } from "../utils/api";
 
 function ListReservations({ reservation, loadDashboard }) {

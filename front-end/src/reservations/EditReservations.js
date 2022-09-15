@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
 import { loadCurrentRes, updateRes } from "../utils/api";
@@ -48,16 +48,16 @@ function EditReservations({ setDate }) {
 
   return (
     <>
-    <div className="mt-3 border p-1 rounded text-center text-white bg-info">
-    <h2>Editing reservation id-{reservation.reservation_id} </h2>
-  </div>
-    <ReservationsForm
-      submitHandler={submitHandler}
-      reservation={reservation}
-      setReservation={setReservation}
-      error={error}
-      ErrorAlert={ErrorAlert}
-    />
+      <div className="mt-3 border p-1 rounded text-center text-white bg-info">
+        <h2>Editing reservation id-{reservation.reservation_id} </h2>
+      </div>
+      <ReservationsForm
+        submitHandler={submitHandler}
+        reservation={reservation}
+        setReservation={setReservation}
+        error={error}
+        ErrorAlert={ErrorAlert}
+      />
     </>
   );
 }

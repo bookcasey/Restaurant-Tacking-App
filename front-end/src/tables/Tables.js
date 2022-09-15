@@ -1,3 +1,4 @@
+import React from 'react';
 import { updateResId } from "../utils/api";
 
 function Tables({ tables, loadDashboard }) {
