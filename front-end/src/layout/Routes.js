@@ -33,7 +33,7 @@ function Routes() {
       </Route>
       <Route path="/dashboard">
         <Dashboard
-          today={date}
+          todayDate={date}
           setDate={setDate}
           reservations={reservations}
           setReservations={setReservations}
@@ -41,7 +41,6 @@ function Routes() {
           setReservationsError={setReservationsError}
           tables={tables}
           setTables={setTables}
-          tablesError={tablesError}
           setTablesError={setTablesError}
         />
       </Route>

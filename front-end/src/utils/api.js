@@ -71,12 +71,12 @@ export async function listReservations(params, signal) {
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`;
   return await fetchJson(url, { headers, signal }, []);
- }
+}
 
- export async function readReservation(resId ,signal) {
+export async function readReservation(resId, signal) {
   const url = `${API_BASE_URL}/reservations/${resId}`;
   return await fetchJson(url, { headers, signal }, []);
- }
+}
 
 export async function createRes(res, signal) {
   const url = `${API_BASE_URL}/reservations`;
@@ -122,9 +122,9 @@ export async function updateRes(resData, reservation_Id, signal) {
   return await fetchJson(url, options, {});
 }
 
-export async function loadCurrentRes( resId, signal ) {
+export async function loadCurrentRes(resId, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${resId}`);
-  return await fetchJson(url, { headers, signal }, [])
+  return await fetchJson(url, { headers, signal }, []);
 }
 
 export async function updateResId(tableId, reservation_id, signal) {
@@ -132,7 +132,7 @@ export async function updateResId(tableId, reservation_id, signal) {
   const options = {
     method: "DELETE",
     headers,
-    body: JSON.stringify({ data: {reservation_id: reservation_id } }),
+    body: JSON.stringify({ data: { reservation_id: reservation_id } }),
     signal,
   };
   return await fetchJson(url, options, {});

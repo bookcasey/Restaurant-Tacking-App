@@ -39,15 +39,15 @@ export default function SearchFeature() {
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        <label>Mobile Number</label>{" "}
+      <form className="mt-5" onSubmit={submitHandler}>
         <input
+        className="form-control"
           onChange={handleChange}
           type="search"
           name="mobile_number"
           placeholder="Enter a customer's phone number"
         ></input>{" "}
-        <button type="submit">Find</button>
+        <button className="w-100 btn btn-primary mr-2 mt-2 mb-3 pt-2 pb-2" type="submit">Find</button>
       </form>
       {mapRerevations()}
     </>

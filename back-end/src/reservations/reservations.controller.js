@@ -5,23 +5,23 @@ const service = require("./reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function list(req, res) {
-  const date = req.query.date
-  const mobile = req.query.mobile_number 
-  if(date){
-    const data = await service.listDate(date)
+  const date = req.query.date;
+  const mobile = req.query.mobile_number;
+  if (date) {
+    const data = await service.listDate(date);
     return res.json({
-      data
-     });
-   }
-   if(mobile){
-     const data = await service.listMobile(mobile)
-     return res.json({
-       data
-     })
-   } else {
-     const data = await service.list()
-     return res.json({data})
-   }
+      data,
+    });
+  }
+  if (mobile) {
+    const data = await service.listMobile(mobile);
+    return res.json({
+      data,
+    });
+  } else {
+    const data = await service.list();
+    return res.json({ data });
+  }
 }
 
 async function read(req, res) {
@@ -31,7 +31,6 @@ async function read(req, res) {
 async function reservationExists(req, res, next) {
   const reservation = await service.read(req.params.reservation_id);
   if (reservation) {
-    console.log(reservation)
     res.locals.reservation = reservation;
     return next();
   }
@@ -62,7 +61,6 @@ function isTime(propertyName) {
     const { data = {} } = req.body;
     const isTime = data[propertyName].replace(/:/g, "");
     if (Number(isTime)) {
-      //  if (Number(isTime) < 1030 || Number(isTime) > 930)
       return next();
     }
     next({ status: 400, message: `${propertyName}` });
@@ -98,26 +96,14 @@ function bodyDataHas(propertyName) {
   };
 }
 
-function isBooked(req, res, next) {
-  const { data = {} } = req.body;
-  if (!data.status) {
-    return next();
-  }
-  if (data.status !== "booked") {
-    next({ status: 400, message: `${data.status}` });
-  }
-  return next();
-}
-
 function isTuesday(req, res, next) {
-  // console.log('hello',req)
   const { data = {} } = req.body; // gets the body of data from the JSON
   const day = new Date(data.reservation_date);
   const dayOf = day.getUTCDay(); // returns from 0-6 0 sunday ->
   if (dayOf === 2) {
     return next({ status: 400, message: `closed` });
   }
-  next();
+  return next();
 }
 
 function isFutureRes(req, res, next) {
@@ -194,7 +180,6 @@ module.exports = {
     bodyDataHas("last_name"),
     bodyDataHas("mobile_number"),
     bodyDataHas("reservation_date"),
-    //  bodyDataHas("status"),
     isTuesday,
     isPeopleNumber,
     bodyDataHas("reservation_time"),
@@ -221,5 +206,5 @@ module.exports = {
     isTime("reservation_time"),
     update,
   ],
-  updateStatus: [reservationExists, isFinished, validStatus, update], //put
+  updateStatus: [reservationExists, isFinished, validStatus, update], 
 };

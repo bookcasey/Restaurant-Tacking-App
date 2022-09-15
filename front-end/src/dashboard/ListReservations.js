@@ -26,7 +26,7 @@ function ListReservations({ reservation, loadDashboard }) {
   }
 
   return (
-    <div className="div">
+    <div className="border rounded p-3 mb-3 mr-3 bg-light">
       <div>
         <h2>{`${reservation.first_name} ${reservation.last_name}'s Reservation`}</h2>
       </div>

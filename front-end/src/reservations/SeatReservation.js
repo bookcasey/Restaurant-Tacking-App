@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import ErrorAlert from "../layout/ErrorAlert";
-import {
-  listTables,
-  readReservation,
-  updateTable,
-} from "../utils/api";
+import { listTables, readReservation, updateTable } from "../utils/api";
 
 function SeatReservation({
   reservationsError,
@@ -81,8 +77,15 @@ function SeatReservation({
           <option value="null">None</option>
           {tables.length > 0 ? mapAvailableTables() : "Loading..."}
         </select>
-        <button className="btn btn-primary ml-1 mr-1" type="submit">Seat</button>
-        <button className="btn btn-secondary" onClick={() => history.push("/dashboard")}>cancel</button>
+        <button className="btn btn-primary ml-1 mr-1" type="submit">
+          Seat
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => history.push("/dashboard")}
+        >
+          cancel
+        </button>
       </form>
       <ErrorAlert error={error} />
       {isNull ? (

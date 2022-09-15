@@ -33,6 +33,10 @@ export default function NewReservation({ setDate }) {
   };
 
   return (
+    <>
+        <div className="mt-5 border rounded text-center text-white p-1 bg-info">
+    <h2>Creating reservation </h2>
+  </div>
     <ReservationsForm
       submitHandler={submitHandler}
       reservation={reservation}
@@ -41,5 +45,6 @@ export default function NewReservation({ setDate }) {
       error={error}
       ErrorAlert={ErrorAlert}
     />
+    </>
   );
 }

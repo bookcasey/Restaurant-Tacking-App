@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
-import { previous, next } from "../utils/date-time";
+import { previous, next, today } from "../utils/date-time";
 import ListTables from "../tables/Tables";
 import useQuery from "../utils/useQuery";
+import { FcPrevious, FcNext } from "react-icons/fc";
+import { MdToday } from "react-icons/md";
 
 /**
  * Defines the dashboard page.
@@ -13,7 +15,7 @@ import useQuery from "../utils/useQuery";
  * @returns {JSX.Element}
  */
 function Dashboard({
-  today,
+  todayDate,
   setDate,
   reservations,
   setReservations,
@@ -21,11 +23,10 @@ function Dashboard({
   setReservationsError,
   tables,
   setTables,
-  tablesError,
   setTablesError,
 }) {
   const query = useQuery();
-  const date = query.get("date") || today;
+  const date = query.get("date") || todayDate;
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -57,7 +58,7 @@ function Dashboard({
         return <h2>Loading...</h2>;
       } else {
         return (
-          <h4 className="alert alert-primary">
+          <h4 style={{ width: "96%" }} className="alert alert-primary">
             There are no reservations for this date yet...
           </h4>
         );
@@ -74,45 +75,54 @@ function Dashboard({
     }
   }
 
+  console.log(today());
+
   return (
-    <main style={{ display: "flex" }}>
-      <div className="">
-        <h1>Dashboard</h1>
-        <div className="d-md-flex mb-3">
-          <h4 className="mb-0">Reservations for {date}</h4>
+    <main style={{ display: "flex" }} className="container mt-3">
+      <div>
+        <div
+          style={{ width: "96%" }}
+          className=" border rounded bg-info p-2 mb-3 text-white"
+        >
+          <h1>Dashboard</h1>
+          <div className="d-md-flex mb-3">
+            <h4 className="mb-0">Reservations for {date}</h4>
+          </div>
         </div>
         <ErrorAlert error={reservationsError} />
         {areReservations()}
+        <div className="mb-2">
+          <button
+            className="btn btn-primary ml-4 pt-2 pb-2"
+            onClick={() => {
+              setDate(today());
+            }}
+          >
+            Today {"\n"}
+            <MdToday />
+          </button>
+        </div>
         <button
-          className="btn btn-primary mr-2 pt-2 pb-2"
-          onClick={() => {
-            setDate(today());
-          }}
-        >
-          Today
-        </button>
-        <button
-          className="btn btn-secondary mr-2 pt-2 pb-2"
+          className="btn btn-secondary ml-4 mr-3 mb-4 pt-2 pb-2"
           onClick={() => {
             setDate(previous(date));
           }}
         >
+          <FcPrevious /> {"\n"}
           Previous Date
         </button>
         <button
-          className="btn btn-secondary mr-2 pt-2 pb-2"
+          className="btn btn-secondary mb-4 pt-2 pb-2"
           onClick={() => {
             setDate(next(date));
           }}
         >
-          Next Date
+          Next Date {"\n"}
+          <FcNext />
         </button>
       </div>
-      <div>
-        <ListTables
-          loadDashboard={loadDashboard}
-          tables={tables}
-        />
+      <div className="border rounded pr-4 pt-4 pb-4 bg-light">
+        <ListTables loadDashboard={loadDashboard} tables={tables} />
       </div>
     </main>
   );

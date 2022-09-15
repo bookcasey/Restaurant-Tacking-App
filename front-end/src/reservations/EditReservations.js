@@ -24,7 +24,7 @@ function EditReservations({ setDate }) {
     const abortController = new AbortController();
     setError(null);
     loadCurrentRes(params.reservation_id, abortController.signal)
-      .then(data => {
+      .then((data) => {
         data.reservation_date = formatAsDate(data.reservation_date);
         return data;
       })
@@ -47,6 +47,10 @@ function EditReservations({ setDate }) {
   };
 
   return (
+    <>
+    <div className="mt-3 border p-1 rounded text-center text-white bg-info">
+    <h2>Editing reservation id-{reservation.reservation_id} </h2>
+  </div>
     <ReservationsForm
       submitHandler={submitHandler}
       reservation={reservation}
@@ -54,6 +58,7 @@ function EditReservations({ setDate }) {
       error={error}
       ErrorAlert={ErrorAlert}
     />
+    </>
   );
 }
 

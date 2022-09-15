@@ -7,3 +7,9 @@
 html,body {
   height : 100%;
 }
+
+@media screen and (max-width: 760px) {
+  .side-bar {
+    height: 50%;
+  }
+}
